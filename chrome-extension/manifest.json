@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "BlockForQuizz",
+  "version": "0.0.1",
+  "description": "Help user to learn through space repetition execices by restricting access to websites.",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "./scripts/restricter.js",
+        "./scripts/content.js"
+      ]
+    }
+  ],
+  "action": {
+    "default_popup": "./popup/popup.html"
+  }
+}

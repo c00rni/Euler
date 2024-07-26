@@ -1,0 +1,16 @@
+{
+  "name": "Space Repetition Restricter",
+  "version": "0.0.9",
+  "description": "Google chrome extension to restrict access to website through space repetition learning quizz",
+  "type": "module",
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "author": "corni",
+  "license": "Apache 2.0",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "hamjest": "^4.1.0",
+    "puppeteer": "^22.13.1"
+  }
+}
