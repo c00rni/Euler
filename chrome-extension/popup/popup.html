@@ -9,12 +9,26 @@
 </head>
 <body>
 	<h1>Restrict websites</h1>
-	<form id="authentificationForm" hidden>
+	<form id="authentificationForm" >
 		<label for="username">Username:</label>
 		<input type="text" id="username" name="username" required>
 		<p id="addMessage"></p>
 		<button type="submit">Connect</button>
 	</form>
+	<form id="addUrlForm" >
+		<label for="addUrlInput">Block website:</label>
+		<input type="text" id="addUrlInput" name="add" required>
+		<p id="addMessage"></p>
+		<button type="submit">Block website</button>
+	</form>
+	<form id="removeUrlForm" >
+		<label for="removeUrlInput">Block website:</label>
+		<input type="text" id="removeUrlInput" name="remove" required>
+		<p id="removeMessage"></p>
+		<button type="submit">Unblock website</button>
+	</form>
+
+
 
 	<script src="popup.js"></script>
 </body>

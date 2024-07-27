@@ -20,7 +20,6 @@ function normalizeUrl(rawUrl) {
 	return url.hostname
 }
 
-/*
 function addWebsite(url) {
 	try {
 		const domain = normalizeUrl(url)
@@ -56,12 +55,21 @@ function removeWebsite(url) {
 }
 
 
-
-const addMessage = document.getElementById('addMessage')
-const removeMessage = document.getElementById('removeMessage')
-document.getElementById('addForm').addEventListener('submit',function (event) {
+document.getElementById('removeUrlForm').addEventListener('submit',function (event) {
 	event.preventDefault();
-	let url = document.getElementById('addUrl').value;
+	let url = document.getElementById('removeUrlInput').value;
+	if(removeWebsite(url)) {
+		removeMessage.textContent = `${url} have been remove.`
+	} else {
+		removeMessage.textContent = `The url can't be remove.`
+	}
+})
+
+const removeMessage = document.getElementById('removeMessage')
+const addMessage = document.getElementById('addMessage')
+document.getElementById('addUrlForm').addEventListener('submit',function (event) {
+	event.preventDefault();
+	let url = document.getElementById('addUrlInput').value;
 	if(addWebsite(url)) {
 		addMessage.textContent = `${url} have been added.`
 	} else {
@@ -69,19 +77,18 @@ document.getElementById('addForm').addEventListener('submit',function (event) {
 	}
 })
 
-document.getElementById('removeForm').addEventListener('submit',function (event) {
-	event.preventDefault();
-	let url = document.getElementById('removeUrl').value;
-	if(removeWebsite(url)) {
-		removeMessage.textContent = `${url} have been remove.`
-	} else {
-		removeMessage.textContent = `The url can't be remove.`
-	}
-})
-*/
 
 let user = localStorage.getItem("user")
 const authentificationForm = document.getElementById('authentificationForm')
+const urlForm = document.getElementById('addUrlForm')
+const removeForm = document.getElementById('removeUrlForm')
 if (user === null) {
 	authentificationForm.className = `visible`
+	urlForm.className = `hidden`
+	removeForm.className = `hidden`
+
+} else {
+	authentificationForm.className = `hidden`
+	urlForm.className = `visible`
+	removeForm.className = `visible`
 }
