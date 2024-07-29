@@ -22,10 +22,34 @@
 		<button type="submit">Block website</button>
 	</form>
 	<form id="removeUrlForm" >
-		<label for="removeUrlInput">Block website:</label>
+		<label for="removeUrlInput">UnBlock website:</label>
 		<input type="text" id="removeUrlInput" name="remove" required>
 		<p id="removeMessage"></p>
 		<button type="submit">Unblock website</button>
+	</form>
+	<hr/>
+	<form id="addQuestionForm" >
+		<label for="statement">Question:</label>
+		<textarea type="text" id="statement" name="statement" rows="3" cols="21" required></textarea>
+		<label for="option1">Option 1:</label>
+		<input type="text" id="option1" name="option1" required>
+		<label for="option2">Option 2:</label>
+		<input type="text" id="option2" name="option2" required>
+		<label for="option3">Option 3:</label>
+		<input type="text" id="option3" name="option3" required>
+
+		<label for="answer">Awnser:</label>
+		<select name="answer" id="answer" required>
+			<option value="">--Please choose an option--</option>
+			<option value=0>Option 1</option>
+			<option value=1>Option 2</option>
+			<option value=2>Option 3</option>
+		</select>
+
+		<button type="submit">Add question</button>
+	</form>
+	<form id="logoutForm">
+		<button type="submit">Log out</button>
 	</form>
 
 

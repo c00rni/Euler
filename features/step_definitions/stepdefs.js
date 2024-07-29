@@ -52,6 +52,7 @@ Then('the remove form is not visible', async function () {
 	assertThat(removeForm && await removeForm.isHidden(), is(truthy()))
 });
 
+
 After(async function () {
 	await this.browser.close()
 })
