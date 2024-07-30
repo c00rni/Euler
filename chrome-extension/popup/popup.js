@@ -64,9 +64,8 @@ async function addQuestion(username, question) {
 		}),
 		method: "POST",
 		body: JSON.stringify(question),
-		mode: "cors"
 	}
-	const response = await fetch(`${apiServer}/question/${username}`, options);
+	const response = await fetch(`${apiServer}/question/create/${username}`, options);
 	if (response.status < 201) {
 		const user = await response.json()
 		if (user["success"]) {
@@ -122,17 +121,36 @@ async function removeWebsite(username, url) {
 	return true
 }
 
+async function getQuestions(username) {
+	const options = {
+		headers: new Headers({
+			'content-type': 'application/json',
+			'Accept': 'application/json'
+		}),
+		method: "GET",
+		mode: "cors"
+	}
+	const response = await fetch(`${apiServer}/question/${username}`, options);
+	if (response.status < 201) {
+		const user = await response.json()
+		if (user["success"]) {
+			return user["success"] 
+		} 
+	}
+	return null
+}
+
 document.getElementById('removeUrlForm').addEventListener('submit',async function (event) {
 	event.preventDefault();
 	let url = document.getElementById('removeUrlInput').value;
 	const userRecord = await chrome.storage.local.get(["user"])
-	const username = userRecord.user.name
+	const username = userRecord.user.username
 	if(await removeWebsite(username, url)) {
 		removeMessage.textContent = `${url} have been remove.`
 	} else {
 		removeMessage.textContent = `The url can't be remove.`
 	}
-	const updatedUser = await getUser(userRecord.user.name)
+	const updatedUser = await getUser(userRecord.user.username)
 	await chrome.storage.local.set({"user": updatedUser})
 })
 
@@ -141,14 +159,14 @@ const addMessage = document.getElementById('addMessage')
 document.getElementById('addUrlForm').addEventListener('submit',async function (event) {
 	event.preventDefault();
 	const userRecord = await chrome.storage.local.get(["user"])
-	const username = userRecord.user.name
+	const username = userRecord.user.username
 	let url = document.getElementById('addUrlInput').value;
 	if(await addWebsite(username, url)) {
 		addMessage.textContent = `${url} have been added.`
 	} else {
 		addMessage.textContent = `The url can't be added.`
 	}
-	const updatedUser = await getUser(userRecord.user.name)
+	const updatedUser = await getUser(userRecord.user.username)
 	await chrome.storage.local.set({"user": updatedUser})
 })
 
@@ -176,7 +194,7 @@ document.getElementById('addQuestionForm').addEventListener('submit', async func
 	const options = [option1, option2, option3]
 	const answer = options[answerIndex]
 	const question = {statement, options: options, answer}
-	const username = (await chrome.storage.local.get(["user"]))?.user.name
+	const username = (await chrome.storage.local.get(["user"]))?.user.username
 	await addQuestion(username, question)
 })
 

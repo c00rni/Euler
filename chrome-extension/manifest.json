@@ -11,6 +11,7 @@
       "matches": ["<all_urls>"],
       "js": [
         "./scripts/restricter.js",
+        "./scripts/api.js",
         "./scripts/content.js"
       ]
     }
