@@ -121,6 +121,8 @@ async function unrestrictDomain(username, domain) {
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('build'))
+
 
 app.get('/user/:name', async (req, res) => {
 	const user = await findOneByName(req.params.name)

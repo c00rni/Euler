@@ -123,7 +123,6 @@ async function removeWebsite(username, url) {
 
 async function getQuestions(username) {
 	try {
-		console.log(`Help: ${username}`)
 		const response = await fetch(`${apiServer}/questions/${username}`,{
 				headers: {"Content-Type": "application/json"},
 				method: "GET",
