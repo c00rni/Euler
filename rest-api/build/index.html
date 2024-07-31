@@ -1,0 +1,6 @@
+<script>
+(async () => {
+	const user = await chrome.storage.local.get(["user"])
+	console.log(JSON.stringify(user))
+})()
+</script>

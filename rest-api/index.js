@@ -1,5 +1,6 @@
 const express = require('express')
 const { MongoClient } = require("mongodb");
+const path = require('path');
 const app = express()
 const cors = require('cors')
 const PORT = 3000
@@ -123,6 +124,20 @@ app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
 
+app.get('/:username', (req, res) => {
+	const options = {
+		root: path.join(__dirname, 'build'),
+		dotfiles: 'deny'
+	}
+	res.sendFile("index.html", options, (err) => {
+		if (err) {
+			 console.log(err)
+		} else {
+
+		}
+	})
+
+})
 
 app.get('/user/:name', async (req, res) => {
 	const user = await findOneByName(req.params.name)
