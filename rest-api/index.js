@@ -1,5 +1,6 @@
 const express = require('express')
 const { MongoClient } = require("mongodb");
+const { ObjectId } = require("mongodb")
 const path = require('path');
 const app = express()
 const cors = require('cors')
@@ -22,7 +23,7 @@ try {
 async function createUser(name) {
 	try {
 		if (!await findOneByName(name)) {
-			await client.db("restricter").collection("users").insertOne({"username": name, "restricted_domains": {}})
+			const result = await client.db("restricter").collection("users").insertOne({"username": name, "restricted_domains": {}, "restriction_date": 0})
 			console.log(`New user created with the following name: ${name} and id: ${result.insertedId}`)
 		}
 		else {
@@ -44,8 +45,9 @@ async function findOneByName(name) {
 
 async function createQuestion(username, question) {
 	try {
+		const timeSpace = 1000*60*60*12
 		const reharshTimestamp = Date.now() //+ (1000*60*60*12)
-		const fullQuestion = {username: username, reharshTimestamp, ...question}
+		const fullQuestion = {username: username, reharshTimestamp, timeSpace, ...question}
 		console.log(`Question created by ${username}`)
 		return await client.db("restricter").collection("questions").insertOne(fullQuestion)
 	} catch(err) {
@@ -120,6 +122,30 @@ async function unrestrictDomain(username, domain) {
 	}
 }
 
+async function updateTimeQuestion(questionId, space) {
+	try {
+		const filter = {"_id": new ObjectId(`${questionId}`)}
+		const res = await client.db("restricter").collection("questions").updateOne(filter, {$set: {"timeSpace" : space*2, "reharshTimestamp" : Date.now() + space * 2}})
+		return res.modifiedCount
+	} catch(err) {
+		console.log(err.message)
+		throw new Error(err.message)
+	}
+	return 0
+}
+
+async function resetTimespace(questionId) {
+	try {
+		const filter = {"_id": new ObjectId(`${questionId}`)}
+		const res = await client.db("restricter").collection("questions").updateOne(filter, {$set: {"timeSpace" : 1000*60*60*12}})
+		return res.modifiedCount
+	} catch(err) {
+		console.log(err.message)
+		throw new Error(err.message)
+	}
+	return 0
+}
+
 app.use(express.json())
 app.use(cors())
 app.use(express.static('build'))
@@ -127,7 +153,7 @@ app.use(express.static('build'))
 app.get('/:username', (req, res) => {
 	const options = {
 		root: path.join(__dirname, 'build'),
-		dotfiles: 'deny'
+		dotfiles: 'deny',
 	}
 	res.sendFile("index.html", options, (err) => {
 		if (err) {
@@ -136,7 +162,6 @@ app.get('/:username', (req, res) => {
 
 		}
 	})
-
 })
 
 app.get('/user/:name', async (req, res) => {
@@ -170,6 +195,46 @@ app.post('/question/create/:name', async (req, res) => {
 app.get('/questions/:username', async (req, res) => {
 	const questions = await findQuestions(req.params.username)
 	res.json(questions)
+})
+
+app.put('/question/:id/:space', async (req, res) => {
+	const result = await updateTimeQuestion(req.params.id, req.params.space)
+	if (result) {
+		res.json({success: `Space repetition time updated`})
+	} else {
+		res.json({error: `time not updated`})
+	}
+})
+
+app.put('/reset/:id', async (req, res) => {
+	const result = await resetTimespace(req.params.id)
+	if (result) {
+		res.json({success: `Space repetition time updated`})
+	} else {
+		res.json({error: `time not updated`})
+	}
+})
+
+app.get('/unrestrict/:username', async (req, res) => {
+	const user = await findOneByName(req.params.username)
+	let result;
+	if (user) {
+		const filter = {"username": req.params.username}
+		try {
+			let result = await client.db("restricter").collection("users").updateOne(filter, {$set: {"restriction_date" : Date.now() + 1000*60*30}})
+		} catch(err) {
+			console.log(err.message)
+		}
+	}
+	else {
+		console.log(`${req.params.username} can't be restristed`)
+	}
+	if (result && result.modifiedCount) {
+		res.json({success: `User ${req.params.username} unrestricted for 30mins`})
+	} else {
+		res.json({error: `User not updated.`})
+	}
+
 })
 
 app.delete('/question/:id', async (req, res) => {

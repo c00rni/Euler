@@ -77,6 +77,7 @@ async function addQuestion(username, question) {
 
 async function registerUser(username) {
 	let response = null;
+	console.log(await getUser(username))
 	try {
 		const user = await getUser(username)
 		if (user) {

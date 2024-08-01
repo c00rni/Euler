@@ -17,8 +17,9 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const username = window.location.pathname
+      console.log(username)
       try {
-        const response = await fetch(`http://localhost:3000/questions/corni`, {
+        const response = await fetch(`http://localhost:3000/questions${username}`, {
           headers:{"Content-Type": "application/json"},
           method: "GET",
         })

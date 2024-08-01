@@ -13,7 +13,7 @@ export default function Question({index, questions, question, setQuestions}) {
       }
     }
     setQuestions(questions)
-  },[selection])
+  },[selection, questions, question, setQuestions])
   return (
     <>
       <h2 className={`text-2xl mb-2 font`}>Question {index}</h2>
