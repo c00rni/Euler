@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "BlockForQuizz",
+  "name": "Euler",
   "version": "0.0.1",
   "description": "Help user to learn through space repetition execices by restricting access to websites.",
   "permissions": [

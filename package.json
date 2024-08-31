@@ -1,7 +1,7 @@
 {
-  "name": "Space Repetition Restricter",
+  "name": "Euler-server",
   "version": "0.0.9",
-  "description": "Google chrome extension to restrict access to website through space repetition learning quizz",
+  "description": "Google chrome extension to learn through space repetition learning while browsing",
   "type": "module",
   "scripts": {
     "test": "cucumber-js"
